@@ -1,2 +1,2 @@
 # OOD-in-Deep-Learning
-NC-metric
+NC_metrics
