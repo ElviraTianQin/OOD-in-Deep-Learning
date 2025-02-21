@@ -51,10 +51,10 @@ def get_default_params():
 
 
 def check_params(args_experiment):
-    # 判断条件
+    # judgement
     if not args_experiment.use_vit:
         if args_experiment.model_name not in ["resnet34", "resnet18"]:
-            raise ValueError("当 use_vit 为 False 时，model_name 必须是 'resnet34' 或 'resnet18'。")
+            raise ValueError("when use_vit is False, model_name must  be 'resnet34' or 'resnet18'.")
     return
 
 
@@ -115,11 +115,11 @@ def define_dataset_params(args_experiment):
     im_size = 28
     padded_im_size = 32
 
-    input_ch = 3  # 输入通道数
+    input_ch = 3  # number of channels
     ood_n_classes = 0
     if args_experiment.in_dataset == 'mnist':
         input_ch = 1
-        C = 10  # 类别数
+        C = 10  # number of classes
     if args_experiment.in_dataset == "cifar10":
         C = 10
     elif args_experiment.in_dataset == "cifar100":
@@ -1055,42 +1055,42 @@ class graphs:
 
 
 if __name__ == '__main__':
-    # 参数设置
+    # parameter settings
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
     parser_experiment = get_default_params()
     args_experiment, unknown = parser_experiment.parse_known_args()
 
-    '''需要修改参数的地方'''
-    # 修改一下固定参数
+    '''modifications'''
+    # changes the parameters for different experiments
     debug = False  # Only runs 20 batches per epoch for debugging
     epochs = 350
-    args_experiment.model_architecture_type = "resnet"  # 模型架构类型，默认为 vit，可选: ["vit", "resnet"]
-    args_experiment.base_path = "./"  # 模型保存的基本目录路径
-    args_experiment.save_path = "./"  # 特征保存的目录路径
-    args_experiment.data_path = "./data"  # 数据集保存的目录路径
-    args_experiment.img_size = 224  # 输入图像的分辨率大小，默认为 224
-    args_experiment.local_rank = -1  # 本地 GPU 索引，用于分布式训练
-    args_experiment.model_type = "ViT-B_16"  # 模型具体变体，默认为 ViT-B_16，可选: ["ViT-B_16", "ViT-B_32", "ViT-L_16", "ViT-L_16-224", "ViT-L_32", "ViT-H_14", "R50-ViT-B_16"]
-    args_experiment.dataset = "cifar10"  # 下游任务使用的数据集类型，默认为 cifar10，可选: ["cifar10", "cifar100", "SVHN", "imagenet"]
-    args_experiment.train_batch_size = 128  # 训练时的总批量大小，默认为 128
-    args_experiment.eval_batch_size = 64  # 评估时的总批量大小，默认为 64
-    args_experiment.model_name = "resnet18"  # 要使用的具体模型文件名
-    args_experiment.in_dataset = "cifar10"  # 下游任务中的 ID 数据集类型，默认为 cifar10，可选: ["cifar10", "cifar100", "imagenet"]
-    args_experiment.out_dataset = "cifar100"  # 下游任务中的 OOD 数据集类型，默认为 cifar100，可选: ["cifar10", "SUN", "places", "cifar100", "SVHN", "tiny_imagenet", "imagenet-o", "imagenet-a", "imagenet", "texture", "inaturalist", "open-images"]
-    args_experiment.cls_size = 768  # 类别标记的大小，默认为 768
-    args_experiment.class_index = 0  # 类别索引，默认为 0
-    args_experiment.save_preds = False  # 是否重新计算模型的预测并保存，默认为 False
-    args_experiment.use_ood = True  # 是否在 ID 数据中使用 OOD 数据，默认为 False
-    args_experiment.use_vit = False  # 是否在 NC 任务中使用 ViT，默认为 False；此项是False的话，model_name必须是"resnet34"或者"resnet18"
+    args_experiment.model_architecture_type = "resnet"  # model architecture, defaultly use vit, choose from: ["vit", "resnet"]
+    args_experiment.base_path = "./"  # base path to save the model
+    args_experiment.save_path = "./"  # paht to save the characteristics
+    args_experiment.data_path = "./data"  # path to save the dataset
+    args_experiment.img_size = 224  # image size(dpi), defaultly 224
+    args_experiment.local_rank = -1  # local GPU index for distributed training
+    args_experiment.model_type = "ViT-B_16"  # Specific ViTs, defaultly use ViT-B_16, choose from: ["ViT-B_16", "ViT-B_32", "ViT-L_16", "ViT-L_16-224", "ViT-L_32", "ViT-H_14", "R50-ViT-B_16"]
+    args_experiment.dataset = "cifar10"  # type of data set used by the downstream task, defaultly use cifar10, choose from: ["cifar10", "cifar100", "SVHN", "imagenet"]
+    args_experiment.train_batch_size = 128  # total batch size for training, defaultly 128
+    args_experiment.eval_batch_size = 64  # total batch size for evaluation, defaultly 64
+    args_experiment.model_name = "resnet18"  # model name
+    args_experiment.in_dataset = "cifar10"  # ID dataset, defaultly cifar10, choose from: ["cifar10", "cifar100", "imagenet"]
+    args_experiment.out_dataset = "cifar100"  # OOD dataset, defaultly cifar100, choose from: ["cifar10", "SUN", "places", "cifar100", "SVHN", "tiny_imagenet", "imagenet-o", "imagenet-a", "imagenet", "texture", "inaturalist", "open-images"]
+    args_experiment.cls_size = 768  # class size 768
+    args_experiment.class_index = 0  # class index 0
+    args_experiment.save_preds = False  # recompute model prediction and save? defaultly False
+    args_experiment.use_ood = True  # use OOD datas in ID? defaultly False
+    args_experiment.use_vit = False  # use ViT in NC? defaultly False, then model_name must be "resnet34" or "resnet18"
     print(f" my args : {args_experiment}")
 
-    # 返回类别数、OOD类别数、输入通道数、原始图像大小和填充后的图像大小
+    # return number of classes, number of OOD classes, channels, original image size and padded image size
     C, ood_n_classes, input_ch, im_size, padded_im_size = define_dataset_params(args_experiment)
     print(f" ood n classes {ood_n_classes}")
     loss_name = args_experiment.loss_name
-    '''结束'''
+    '''end'''
 
-    # 训练参数
+    # train parameters
     # Optimization hyperparameters
     lr_decay = 0.1
     lr = 0.0679
@@ -1104,15 +1104,15 @@ if __name__ == '__main__':
     epoch_list = list(range(11)) + list(range(10, epochs + 1, 5)) + epochs_lr_decay
     epoch_list_plot = [1, 5, 50, 250, epochs - 1, epochs, epochs + 1] + epochs_lr_decay
 
-    # 训练和分析的数据，是同一个
+    # training and evaluation data, same one
     train_loader, analysis_loader = load_data(args_experiment, args_experiment.in_dataset)
     print(f" analysis_loader len {len(analysis_loader)}     in data {args_experiment.in_dataset}")
 
-    '''一些条件判断'''
+    '''check'''
     check_params(args_experiment)
 
     if not args_experiment.use_vit:
-        print("不使用VIT模型")
+        print("don't use VIT")
         if args_experiment.model_name == "resnet34":
             model = models.resnet34(pretrained = False, num_classes = C)
         elif args_experiment.model_name == "resnet18":
@@ -1126,7 +1126,7 @@ if __name__ == '__main__':
             classifier = model.fc
             classifier.register_forward_hook(hook)
 
-    # odd参数
+    # odd parameters
     if args_experiment.use_ood:
         if args_experiment.add_noise_ID:
             ood_loader, ood_analysis_loader = load_data(args_experiment, args_experiment.in_dataset)
@@ -1280,7 +1280,7 @@ if __name__ == '__main__':
                 if args_experiment.use_ood:
                     print(" analysing K+1 case")
                     print(" analysing ID and OOD")
-                    '''分析的代码'''
+                    '''analysis codes'''
                     analysis_plus_ood(graphs, model, criterion_summed, device, C, analysis_loader, ood_analysis_loader,
                         epoch = epoch, add_noise_ID = args_experiment.add_noise_ID, noise_value = args_experiment.noise_value)
                 else:
